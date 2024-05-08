@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Open the CSV file
-with open('./data/tri_blink_signal_1Hz_2ms.Dat', 'r') as file:
+with open('./new_data/tri_blink_signal_100Hz_2ms_delay_20ms.Dat', 'r') as file:
 
     # Create a CSV reader object
     csv_reader = csv.reader(file)
@@ -22,7 +22,7 @@ with open('./data/tri_blink_signal_1Hz_2ms.Dat', 'r') as file:
     # Iterate over each row in the CSV file
     for row in (csv_reader):
         # Assuming each row has 4 columns
-        # if float(row[3])>1:
+        if float(row[3])>1:
 
             time.append(float(row[0]))
             x.append(float(row[1]))
@@ -36,33 +36,14 @@ with open('./data/tri_blink_signal_1Hz_2ms.Dat', 'r') as file:
     diffs2 = np.diff(diffs)
     diffs2 = np.insert(diffs2, 0, diffs2[0])
 
-
-# Plotting the data
-# time = time[1500:1600]
-# x = x[1500:1600]
-# y = y[1500:1600]
-# sigma = sigma[1500:1600]
-# diff = diff[1500:1600]
-x_temp = []
-y_temp = []
-sigma_temp = [] 
-time_temp = []     
-
-for i, diff in enumerate(diffs2):
-    if diff > 0:
-        x_temp.append(x[i])
-        y_temp.append(y[i])
-        sigma_temp.append(sigma[i])
-        time_temp.append(time[i])
-
-start = 800
-end = 1200
-time = time[start:end]
-x = x[start:end]
-y = y[start:end]
-sigma = sigma[start:end]
-diffs = diffs[start:end]
-diffs2 = diffs2[start:end]
+start = 1300
+end = 1400
+# time = time[start:end]
+# x = x[start:end]
+# y = y[start:end]
+# sigma = sigma[start:end]
+# diffs = diffs[start:end]
+# diffs2 = diffs2[start:end]
 
 # x = []
 # y = []
@@ -73,7 +54,7 @@ diffs2 = diffs2[start:end]
 # time = time_temp.copy()
 # print(len(x), len(y), len(sigma))
 # Create subplots
-fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, 1, figsize=(10, 8), sharex=True)
+fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
 
 # Plot X data
 ax1.plot(time, x, label='X', color='r')
@@ -95,26 +76,26 @@ ax3.set_ylabel('Sigma Value')
 ax3.grid(True)
 ax3.legend()
 
-# Plot diff data
-ax4.plot(time, diffs, label='Sigma', color='k')
-ax4.set_xlabel('Time')
-ax4.set_ylabel('diff Value')
-ax4.grid(True)
-ax4.legend()
+# # Plot diff data
+# ax4.plot(time, diffs, label='Sigma', color='k')
+# ax4.set_xlabel('Time')
+# ax4.set_ylabel('diff Value')
+# ax4.grid(True)
+# ax4.legend()
 
-# Plot diff data
-ax5.plot(time, diffs2, label='Sigma', color='k')
-ax5.set_xlabel('Time')
-ax5.set_ylabel('diff2 Value')
-ax5.grid(True)
-ax5.legend()
+# # Plot diff data
+# ax5.plot(time, diffs2, label='Sigma', color='k')
+# ax5.set_xlabel('Time')
+# ax5.set_ylabel('diff2 Value')
+# ax5.grid(True)
+# ax5.legend()
 
 plt.tight_layout()
 # plt.show()
 
 
 plt.figure(figsize=(8, 6))
-scatter = plt.scatter(x, y, marker='o', label='Data', s=0.5,c=sigma, cmap='viridis', alpha=0.75)
+scatter = plt.scatter(x, y, marker='o', label='Data', s=5,c=sigma, cmap='viridis', alpha=0.75)
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title('X vs Y Data')
@@ -127,5 +108,20 @@ plt.legend()
 # Add a color bar indicating the magnitude scale
 cbar = plt.colorbar(scatter)
 cbar.set_label('Magnitude')
+
+# Plot the histograms
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 8), sharex=True)
+
+ax1.hist(x, bins=30, color='skyblue', edgecolor='black')  # Adjust the number of bins as needed
+ax1.set_xlabel('X')
+ax1.set_ylabel('Frequency')
+ax1.set_title('Histogram of X')
+ax1.grid(True)
+
+ax2.hist(y, bins=30, color='skyblue', edgecolor='black')  # Adjust the number of bins as needed
+ax2.set_xlabel('Y')
+ax2.set_ylabel('Frequency')
+ax2.set_title('Histogram of Y')
+ax2.grid(True)
 
 plt.show()
