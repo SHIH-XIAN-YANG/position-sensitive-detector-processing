@@ -4,7 +4,7 @@ try
   % Read data using dlmread for flexibility with delimiters and data types
   data =  readmatrix(path_dir, 'Delimiter', ',');
 
-
+  
   % Extract and scale data columns (assuming consistent data types)
   x_c = data(:, 1) / 1000000;
   y_c = data(:, 2) / 1000000;
@@ -18,6 +18,15 @@ try
   q4_c = data(:, 10) / 1000;
   q5_c = data(:, 11) / 1000;
   q6_c = data(:, 12) / 1000;
+  len = length(x_c);
+  fs = 2000;  %2K Hz sampling rate
+  ts = 1/fs;
+  end_time = len/fs-ts;
+  time = linspace(0, end_time, len);
+
+  scatter(time, z_c, 0.2);
+
+
 catch
   % Handle errors gracefully (e.g., return empty outputs or log error)
   x_c = [];

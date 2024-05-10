@@ -98,7 +98,11 @@ def load_psd_data(filename):
     y1 = df['y1(mm)']
     x2 = df['x2(mm)']
     y2 = df['y2(mm)']
-    return x1, y1, x2, y2
+    x_ideal = df['x(mm)']
+    y_ideal = df['y(mm)']
+    z_ideal = df['z(mm)']
+
+    return x1, y1, x2, y2, x_ideal, y_ideal, z_ideal
 
 def load_HRSS_trajectory(self,path_dir:str):
         try:
@@ -118,13 +122,15 @@ def load_HRSS_trajectory(self,path_dir:str):
         return x_c, y_c, z_c, pitch_c, yaw_c, roll_c
 
 
-def main():
-    psd_data_filename = "./2024_5_8_18_21.csv"
-    rt605_data_filename = "./points.txt"
-    x1_observed, y1_observed,x2_observed, y2_observed = load_psd_data(psd_data_filename)
-    x_hrss,y_hrss,z_hrss,a_hrss,b_hrss,c_hrss = load_HRSS_trajectory(rt605_data_filename)
-    #尋找機械手臂的輸出位置資訊與PSD資料對其
 
+def main():
+    psd_data_filename = "./good.csv"
+    rt605_data_filename = "./points.txt"
+    x1_observed, y1_observed,x2_observed, y2_observed,x_hrss,y_hrss,z_hrss = load_psd_data(psd_data_filename)
+    # x_hrss,y_hrss,z_hrss,a_hrss,b_hrss,c_hrss = load_HRSS_trajectory(rt605_data_filename)
+    
+    #尋找機械手臂的輸出位置資訊與PSD資料對其
+    
 
     #TODO: convert ideal path x,y,z from worl frame to image frame
     ideal_img_coordinate = np.zeros(len(x_hrss),3)
@@ -135,6 +141,8 @@ def main():
     distortion = Distortion(x1_observed, y1_observed,ideal_img_coordinate[:,2], ideal_img_coordinate[:,0],ideal_img_coordinate[:,1],ideal_img_coordinate[:,2])
     distortion.distortion__params_identification()
     distortion.plot_distortion(show=True)
+
+    # data = distortion.undistort(data)
     
 
 if __name__=="__main__":
