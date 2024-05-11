@@ -4,6 +4,7 @@ import math
 import pandas as pd
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import json
 
 def distortion_func(r,x,y,k1,k2,k3,p1,p2):
     r = math.sqrt(x**2 + y**2)
@@ -109,3 +110,36 @@ class Distortion():
         plt.legend()
         plt.show()
         return fig
+    
+
+    def write_distortion_parameters_to_file(self, file_path):
+        radial_distortion = {
+            "k1": self.k1,
+            "k2": self.k2,
+            "k3": self.k3
+        }
+        tangential_distortion = {
+            "p1": self.p1,
+            "p2": self.p2
+        }
+        distortion_params = {
+            "radial_distortion": radial_distortion,
+            "tangential_distortion": tangential_distortion
+        }
+
+        with open(file_path, 'w') as json_file:
+            json.dump(distortion_params, json_file, indent=4)
+
+    def load_from_file(self, file_path):
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+        
+        radial_distortion = data["radial_distortion"]
+        tangential_distortion = data["tangential_distortion"]
+
+        self.k1 = radial_distortion["k1"]
+        self.k2 = radial_distortion["k2"]
+        self.k3 = radial_distortion["k3"]
+
+        self.p1 = tangential_distortion["p1"]
+        self.p2 = tangential_distortion["p2"]

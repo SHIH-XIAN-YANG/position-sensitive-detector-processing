@@ -1,0 +1,11 @@
+{
+  "radial_distortion": {
+    "k1": 0.1,
+    "k2": 0.2,
+    "k3": 0.3
+  },
+  "tangential_distortion": {
+    "p1": 0.01,
+    "p2": 0.02
+  }
+}
