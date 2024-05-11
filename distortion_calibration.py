@@ -6,9 +6,10 @@ from distortion  import Distortion
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-t1 = np.array([213,904,194]).T 
-t2 = np.array([247,904,194]).T
-
+# t1 = np.array([213,904,194]).T 
+# t2 = np.array([247,904,194]).T
+t1 = np.array([203,893,184]).T 
+t2 = np.array([257,893,178]).T
 def img2world(x1,y1,x2,y2):
     """
     The function convert psd data from image frame to world frame
@@ -131,7 +132,7 @@ def load_HRSS_trajectory(self,path_dir:str):
 
 
 def main():
-    psd_data_filename = "./black_psd2024_5_11_11_57.csv"
+    psd_data_filename = "./black_extrinsic_2024_5_11_19_52.csv"
     rt605_data_filename = "./points.txt"
     x1_observed, y1_observed,x2_observed, y2_observed,x_hrss,y_hrss,z_hrss = load_psd_data(psd_data_filename)
     # x_hrss,y_hrss,z_hrss,a_hrss,b_hrss,c_hrss = load_HRSS_trajectory(rt605_data_filename)
